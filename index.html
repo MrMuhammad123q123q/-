@@ -151,39 +151,46 @@
     let quizContainer = document.getElementById('quiz');
     let resultContainer = document.getElementById('result');
     let correctAnswers = 0;
+    let answeredQuestions = 0;
 
     function buildQuiz() {
         questions.forEach((question, index) => {
             let questionDiv = document.createElement('div');
             questionDiv.className = 'question';
             questionDiv.innerHTML = `<p>${index + 1}. ${question.question}</p>
-                                     <ul class="options">
-                                        \\${question.options.map(option =>
-                                            `<li><button onclick="checkAnswer(this, '${option}', '${question.answer}', '${index}')">${option}</button></li>`
-                                        ).join('')}
-                                     </ul>`;
+                                     <ul class="options"></ul>`;
+            question.options.forEach(option => {
+                let optionLi = document.createElement('li');
+                optionLi.innerHTML = `<button onclick="checkAnswer(${index}, '${option}')">${option}</button>`;
+                questionDiv.querySelector('.options').appendChild(optionLi);
+            });
             quizContainer.appendChild(questionDiv);
         });
     }
 
-    function checkAnswer(button, selected, answer, index) {
-        let questionDiv = button.closest('.question');
-        if (selected === answer) {
-            button.classList.add('correct');
-            questionDiv.classList.add('correct');
-            correctAnswers++;
-        } else {
-            button.classList.add('incorrect');
-            questionDiv.classList.add('incorrect');
-        }
-
-        // Disable all buttons in the current question after an answer is selected
-        questionDiv.querySelectorAll('button').forEach(btn => {
+    function checkAnswer(index, selected) {
+        let questionDiv = quizContainer.children[index];
+        let buttons = questionDiv.querySelectorAll('button');
+        buttons.forEach(btn => {
+            if (btn.textContent === questions[index].answer) {
+                btn.classList.add('correct');
+            }
+            if (btn.textContent === selected && selected !== questions[index].answer) {
+                btn.classList.add('incorrect');
+            }
             btn.disabled = true;
         });
 
-        // Show the result after all questions are answered
-        if (correctAnswers + document.querySelectorAll('.incorrect').length === questions.length) {
+        if (selected === questions[index].answer) {
+            questionDiv.classList.add('correct');
+            correctAnswers++;
+        } else {
+            questionDiv.classList.add('incorrect');
+        }
+
+        answeredQuestions++;
+
+        if (answeredQuestions === questions.length) {
             showResult();
         }
     }
