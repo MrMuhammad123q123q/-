@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Викторина о Пророке Мухаммаде (Да благословит его Аллах и приветствует)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #0056b3;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options li {
+            margin-bottom: 10px;
+        }
+        .options input {
+            margin-right: 10px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #0056b3;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #003d82;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .result span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Викторина о Пророке Мухаммаде (Да благословит его Аллах и приветствует)</h1>
+    <div id="quiz"></div>
+    <button onclick="submitQuiz()">Отправить</button>
+    <div id="result" class="result"></div>
+</div>
+
+<script>
+    const questions = [
+        {
+            question: "Как называется город, в котором родился Пророк Мухаммад (Да благословит его Аллах и приветствует)?",
+            options: ["Медине", "Мекке", "Иерусалиме", "Дамаске"],
+            answer: "Мекке"
+        },
+        {
+            question: "Сколько лет было Пророку Мухаммаду (Да благословит его Аллах и приветствует), когда он получил первое откровение?",
+            options: ["30", "40", "50", "25"],
+            answer: "40"
+        },
+        {
+            question: "Как называется пещера, в которой Пророк Мухаммад (Да благословит его Аллах и приветствует) получил первое откровение?",
+            options: ["Пещера Хира", "Пещера Саур", "Пещера Таур", "Пещера Аджьяд"],
+            answer: "Пещера Хира"
+        },
+        {
+            question: "Кто была первой женой Пророка Мухаммада (Да благословит его Аллах и приветствует)?",
+            options: ["Аиша", "Хафса", "Хадиджа", "Зайнаб"],
+            answer: "Хадиджа"
+        },
+        {
+            question: "Как называется племя, к которому принадлежал Пророк Мухаммад (Да благословит его Аллах и приветствует)?",
+            options: ["Курайш", "Хашим", "Бану Хашим", "Бану Умайя"],
+            answer: "Курайш"
+        },
+        {
+            question: "Как называется ночное путешествие, которое Пророк Мухаммад (Да благословит его Аллах и приветствует) совершил из Мекки в Иерусалим?",
+            options: ["Исра", "Мирадж", "Хиджра", "Хадж"],
+            answer: "Исра"
+        },
+        {
+            question: "Как зовут ангела, который передал Коран Пророку Мухаммаду (Да благословит его Аллах и приветствует)?",
+            options: ["Джибриль", "Микаил", "Исрафил", "Азраил"],
+            answer: "Джибриль"
+        },
+        {
+            question: "Как звали верблюда, на котором Пророк Мухаммад (Да благословит его Аллах и приветствует) ехал во время завоевания Мекки?",
+            options: ["Аль-Касва", "Аль-Адба", "Аль-Джад'а", "Аль-Хади"],
+            answer: "Аль-Касва"
+        },
+        {
+            question: "Как называется первая битва в истории ислама?",
+            options: ["Битва при Бадре", "Битва при Ухуде", "Битва при рву", "Битва при Хайбаре"],
+            answer: "Битва при Бадре"
+        },
+        {
+            question: "Как называется мечеть, которую построил Пророк Мухаммад (Да благословит его Аллах и приветствует) в Медине?",
+            options: ["Мечеть Аль-Харам", "Мечеть Пророка", "Мечеть Аль-Акса", "Мечеть Куба"],
+            answer: "Мечеть Пророка"
+        },
+        {
+            question: "Как звали дядю Пророка Мухаммада (Да благословит его Аллах и приветствует), который его поддерживал?",
+            options: ["Абу Талиб", "Абу Лахаб", "Хамза", "Аббас"],
+            answer: "Абу Талиб"
+        },
+        {
+            question: "Как называется последняя проповедь, произнесенная Пророком Мухаммадом (Да благословит его Аллах и приветствует)?",
+            options: ["Прощальная проповедь", "Пятничная проповедь", "Проповедь на праздник", "Проповедь в Арафате"],
+            answer: "Прощальная проповедь"
+        }
+    ];
+
+    let quizContainer = document.getElementById('quiz');
+    let resultContainer = document.getElementById('result');
+
+    function buildQuiz() {
+        questions.forEach((question, index) => {
+            let questionDiv = document.createElement('div');
+            questionDiv.className = 'question';
+            questionDiv.innerHTML = `<p>${index + 1}. ${question.question}</p>
+                                     <ul class="options">
+                                        ${question.options.map(option =>
+                                            `<li><input type="radio" name="question${index}" value="${option}">${option}</li>`
+                                        ).join('')}
+                                     </ul>`;
+            quizContainer.appendChild(questionDiv);
+        });
+    }
+
+    function submitQuiz() {
+        let correctAnswers = 0;
+        let totalQuestions = questions.length;
+
+        questions.forEach((question, index) => {
+            let selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+            if (selectedOption && selectedOption.value === question.answer) {
+                correctAnswers++;
+            }
+        });
+
+        resultContainer.innerHTML = `<p>Вы ответили правильно на <span>${correctAnswers}</span> из <span>${totalQuestions}</span> вопросов.</p>`;
+    }
+
+    buildQuiz();
+</script>
+
+</body>
+</html>
