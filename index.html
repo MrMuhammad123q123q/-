@@ -38,11 +38,7 @@
         .options li {
             margin-bottom: 10px;
         }
-        .options input {
-            margin-right: 10px;
-        }
-        button {
-            display: block;
+        .options button {
             width: 100%;
             padding: 10px;
             background-color: #0056b3;
@@ -51,9 +47,16 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            transition: background-color 0.3s;
         }
-        button:hover {
+        .options button:hover {
             background-color: #003d82;
+        }
+        .options button.correct {
+            background-color: green;
+        }
+        .options button.incorrect {
+            background-color: red;
         }
         .result {
             margin-top: 20px;
@@ -69,7 +72,6 @@
 <div class="container">
     <h1>Викторина о Пророке Мухаммаде (Да благословит его Аллах и приветствует)</h1>
     <div id="quiz"></div>
-    <button onclick="submitQuiz()">Отправить</button>
     <div id="result" class="result"></div>
 </div>
 
@@ -139,6 +141,7 @@
 
     let quizContainer = document.getElementById('quiz');
     let resultContainer = document.getElementById('result');
+    let correctAnswers = 0;
 
     function buildQuiz() {
         questions.forEach((question, index) => {
@@ -146,26 +149,35 @@
             questionDiv.className = 'question';
             questionDiv.innerHTML = `<p>${index + 1}. ${question.question}</p>
                                      <ul class="options">
-                                        ${question.options.map(option =>
-                                            `<li><input type="radio" name="question${index}" value="${option}">${option}</li>`
+                                        \\${question.options.map(option =>
+                                            `<li><button onclick="checkAnswer(this, '${option}', '${question.answer}')">${option}</button></li>`
                                         ).join('')}
                                      </ul>`;
             quizContainer.appendChild(questionDiv);
         });
     }
 
-    function submitQuiz() {
-        let correctAnswers = 0;
-        let totalQuestions = questions.length;
+    function checkAnswer(button, selected, answer) {
+        if (selected === answer) {
+            button.classList.add('correct');
+            correctAnswers++;
+        } else {
+            button.classList.add('incorrect');
+        }
 
-        questions.forEach((question, index) => {
-            let selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
-            if (selectedOption && selectedOption.value === question.answer) {
-                correctAnswers++;
-            }
+        // Disable all buttons after an answer is selected
+        document.querySelectorAll('.options button').forEach(btn => {
+            btn.disabled = true;
         });
 
-        resultContainer.innerHTML = `<p>Вы ответили правильно на <span>${correctAnswers}</span> из <span>${totalQuestions}</span> вопросов.</p>`;
+        // Show the result after all questions are answered
+        if (correctAnswers + document.querySelectorAll('.incorrect').length === questions.length) {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        resultContainer.innerHTML = `<p>Вы ответили правильно на <span>${correctAnswers}</span> из <span>${questions.length}</span> вопросов.</p>`;
     }
 
     buildQuiz();
