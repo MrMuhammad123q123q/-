@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head><!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5YN9GJ22YD"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    
-      gtag('config', 'G-5YN9GJ22YD');
-    </script>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Викторина о Пророке Мухаммаде (Да благословит его Аллах и приветствует)</title>
@@ -35,6 +27,31 @@
         h1 {
             text-align: center;
             color: #0056b3;
+        }
+        .nickname-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .nickname-form input {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .nickname-form button {
+            padding: 10px 20px;
+            background-color: #0056b3;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .nickname-form button:hover {
+            background-color: #003d82;
         }
         .question {
             margin-bottom: 20px;
@@ -82,13 +99,23 @@
         .result span {
             font-weight: bold;
         }
+        .welcome-message {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2em;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Викторина о Пророке Мухаммаде (Да благословит его Аллах и приветствует)</h1>
-    <div id="quiz"></div>
+    <div class="nickname-form" id="nickname-form">
+        <input type="text" id="nickname" placeholder="Введите ваш никнейм">
+        <button onclick="saveNickname()">Сохранить</button>
+    </div>
+    <div class="welcome-message" id="welcome-message" style="display: none;"></div>
+    <div id="quiz" style="display: none;"></div>
     <div id="result" class="result"></div>
 </div>
 
@@ -96,8 +123,8 @@
     const questions = [
         {
             question: "Как называется город, в котором родился Пророк Мухаммад (Да благословит его Аллах и приветствует)?",
-            options: ["Медина", "Мекка", "Иерусалим", "Дамаск"],
-            answer: "Мекка"
+            options: ["Медине", "Мекке", "Иерусалиме", "Дамаске"],
+            answer: "Мекке"
         },
         {
             question: "Сколько лет было Пророку Мухаммаду (Да благословит его Аллах и приветствует), когда он получил первое откровение?",
@@ -161,6 +188,24 @@
     let correctAnswers = 0;
     let answeredQuestions = 0;
 
+    function saveNickname() {
+        const nicknameInput = document.getElementById('nickname');
+        const nickname = nicknameInput.value.trim();
+        if (nickname) {
+            localStorage.setItem('userNickname', nickname);
+            displayWelcomeMessage(nickname);
+            document.getElementById('nickname-form').style.display = 'none';
+            document.getElementById('quiz').style.display = 'block';
+            buildQuiz();
+        }
+    }
+
+    function displayWelcomeMessage(nickname) {
+        const welcomeMessage = document.getElementById('welcome-message');
+        welcomeMessage.textContent = `Привет, ${nickname}! Ответьте на вопросы викторины:`;
+        welcomeMessage.style.display = 'block';
+    }
+
     function buildQuiz() {
         questions.forEach((question, index) => {
             let questionDiv = document.createElement('div');
@@ -207,7 +252,15 @@
         resultContainer.innerHTML = `<p>Вы ответили правильно на <span>${correctAnswers}</span> из <span>${questions.length}</span> вопросов.</p>`;
     }
 
-    buildQuiz();
+    window.onload = function() {
+        const savedNickname = localStorage.getItem('userNickname');
+        if (savedNickname) {
+            displayWelcomeMessage(savedNickname);
+            document.getElementById('nickname-form').style.display = 'none';
+            document.getElementById('quiz').style.display = 'block';
+            buildQuiz();
+        }
+    }
 </script>
 
 </body>
