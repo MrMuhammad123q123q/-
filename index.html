@@ -420,17 +420,39 @@
     }
 
     function sendResults() {
-    const email = document.getElementById('email').value.trim();
-    if (!email) return alert('Введите email');
+    const userEmail = document.getElementById('email').value.trim();
+    if (!userEmail) return alert('Введите email');
 
-    // Формируем текст письма
-    const resultsText = `
-        Пользователь: ${userNickname}
-        Правильных ответов: ${correctAnswers}/${questions.length}
-        Ссылка на викторину: ${window.location.href}
+    // Формируем текст письма для пользователя
+    const userMessage = `
+        Ассаляму алейкум, ${userNickname}!
+        Ваш результат викторины: ${correctAnswers} из ${questions.length} правильных ответов.
+        ${getResultMessage(correctAnswers, questions.length)}
     `;
 
-    // Отправляем через FormSubmit (бесплатный сервис)
+    // Формируем текст письма для администратора (вас)
+    const adminMessage = `
+        Новые результаты викторины:
+        Пользователь: ${userNickname}
+        Email: ${userEmail}
+        Правильных ответов: ${correctAnswers}/${questions.length}
+        Дата: ${new Date().toLocaleString()}
+    `;
+
+    // Отправляем письмо пользователю
+    fetch('https://formsubmit.co/ajax/' + userEmail, {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            _subject: 'Ваши результаты викторины',
+            message: userMessage
+        })
+    });
+
+    // Отправляем письмо администратору (вам)
     fetch('https://formsubmit.co/ajax/karollev1112@gmail.com', {
         method: 'POST',
         headers: { 
@@ -438,14 +460,13 @@
             'Accept': 'application/json'
         },
         body: JSON.stringify({
-            email: email,
-            name: 'Результаты викторины',
-            message: resultsText
+            _subject: `Результаты ${userNickname}`,
+            message: adminMessage
         })
     })
     .then(response => response.json())
     .then(data => {
-        alert('Результаты отправлены!');
+        alert('Результаты отправлены на вашу почту!');
         showFinalResults();
     })
     .catch(error => {
