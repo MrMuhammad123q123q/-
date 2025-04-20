@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head><!-- Google tag (gtag.js) -->
+<head>
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HVXZ75FKV6"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-    
       gtag('config', 'G-HVXZ75FKV6');
     </script>
     <meta charset="UTF-8">
@@ -112,6 +112,76 @@
             text-align: center;
             font-size: 1.2em;
         }
+        .share-section {
+            margin-top: 30px;
+            text-align: center;
+            padding: 20px;
+            background-color: #f0f8ff;
+            border-radius: 8px;
+        }
+        .share-btn {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+        }
+        .share-btn:hover {
+            background-color: #218838;
+        }
+        .hidden {
+            display: none;
+        }
+        #final-results {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #email-form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #email-form input {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 300px;
+        }
+        #email-form button {
+            padding: 10px 20px;
+            background-color: #0056b3;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .copy-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .copy-link input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            width: 200px;
+        }
+        .copy-link button {
+            padding: 8px 15px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -120,11 +190,25 @@
     <h1>Викторина о Пророке Мухаммаде (Да благословит его Аллах и приветствует)</h1>
     <div class="nickname-form" id="nickname-form">
         <input type="text" id="nickname" placeholder="Введите ваш никнейм">
-        <button onclick="saveNickname()">Сохранить</button>
+        <button onclick="saveNickname()">Начать викторину</button>
     </div>
     <div class="welcome-message" id="welcome-message" style="display: none;"></div>
     <div id="quiz" style="display: none;"></div>
     <div id="result" class="result"></div>
+    <div id="share-section" class="share-section hidden">
+        <h3>Поделитесь результатами!</h3>
+        <button id="share-btn" class="share-btn">Проверить друга</button>
+        <div id="copy-link" class="copy-link hidden">
+            <input type="text" id="quiz-link" value="" readonly>
+            <button onclick="copyLink()">Копировать</button>
+        </div>
+        <div id="email-form" class="hidden">
+            <h3>Отправить результаты на email</h3>
+            <input type="email" id="email" placeholder="Ваш email">
+            <button onclick="sendResults()">Отправить</button>
+        </div>
+    </div>
+    <div id="final-results" class="hidden"></div>
 </div>
 
 <script>
@@ -240,11 +324,13 @@
     let resultContainer = document.getElementById('result');
     let correctAnswers = 0;
     let answeredQuestions = 0;
+    let userNickname = '';
 
     function saveNickname() {
         const nicknameInput = document.getElementById('nickname');
         const nickname = nicknameInput.value.trim();
         if (nickname) {
+            userNickname = nickname;
             localStorage.setItem('userNickname', nickname);
             displayWelcomeMessage(nickname);
             document.getElementById('nickname-form').style.display = 'none';
@@ -255,7 +341,7 @@
 
     function displayWelcomeMessage(nickname) {
         const welcomeMessage = document.getElementById('welcome-message');
-        welcomeMessage.textContent = `Ассаляму Алейкум, ${nickname}! Ответьте на вопросы викторины:`;
+        welcomeMessage.textContent = `Ассаляму алейкум, ${nickname}! Ответьте на вопросы викторины:`;
         welcomeMessage.style.display = 'block';
     }
 
@@ -298,20 +384,89 @@
 
         if (answeredQuestions === questions.length) {
             showResult();
+            showShareSection();
         }
     }
 
     function showResult() {
         resultContainer.innerHTML = `<p>Вы ответили правильно на <span>${correctAnswers}</span> из <span>${questions.length}</span> вопросов.</p>`;
+        
+        // Сохраняем результаты в localStorage
+        const quizResults = {
+            nickname: userNickname,
+            correct: correctAnswers,
+            total: questions.length,
+            date: new Date().toLocaleString()
+        };
+        localStorage.setItem('quizResults', JSON.stringify(quizResults));
+    }
+
+    function showShareSection() {
+        const shareSection = document.getElementById('share-section');
+        shareSection.classList.remove('hidden');
+        
+        document.getElementById('share-btn').addEventListener('click', function() {
+            document.getElementById('copy-link').classList.remove('hidden');
+            document.getElementById('email-form').classList.remove('hidden');
+            document.getElementById('quiz-link').value = window.location.href;
+        });
+    }
+
+    function copyLink() {
+        const linkInput = document.getElementById('quiz-link');
+        linkInput.select();
+        document.execCommand('copy');
+        alert('Ссылка скопирована! Отправьте ее другу.');
+    }
+
+    function sendResults() {
+        const email = document.getElementById('email').value.trim();
+        if (email) {
+            // Здесь можно добавить реальную отправку на сервер
+            alert(`Результаты отправлены на ${email} (в реальной версии будет работать)`);
+            
+            // Показываем финальные результаты
+            showFinalResults();
+        } else {
+            alert('Введите email');
+        }
+    }
+
+    function showFinalResults() {
+        const finalResults = document.getElementById('final-results');
+        finalResults.classList.remove('hidden');
+        finalResults.innerHTML = `
+            <h2>Ваши результаты, ${userNickname}</h2>
+            <p>Правильных ответов: <strong>${correctAnswers}/${questions.length}</strong></p>
+            <p>${getResultMessage(correctAnswers, questions.length)}</p>
+        `;
+    }
+
+    function getResultMessage(correct, total) {
+        const percentage = (correct / total) * 100;
+        if (percentage >= 90) return "Отличный результат! Вы хорошо знаете биографию Пророка (ﷺ).";
+        if (percentage >= 70) return "Хороший результат! Вы знаете основные моменты жизни Пророка (ﷺ).";
+        if (percentage >= 50) return "Неплохо, но есть куда расти! Рекомендуем почитать больше о Пророке (ﷺ).";
+        return "Попробуйте еще раз и изучите больше о жизни Пророка Мухаммада (ﷺ).";
     }
 
     window.onload = function() {
         const savedNickname = localStorage.getItem('userNickname');
         if (savedNickname) {
+            userNickname = savedNickname;
             displayWelcomeMessage(savedNickname);
             document.getElementById('nickname-form').style.display = 'none';
             document.getElementById('quiz').style.display = 'block';
             buildQuiz();
+            
+            // Проверяем, есть ли сохраненные результаты
+            const savedResults = localStorage.getItem('quizResults');
+            if (savedResults) {
+                const results = JSON.parse(savedResults);
+                correctAnswers = results.correct;
+                showResult();
+                showShareSection();
+            }
         }
     }
 </script>
