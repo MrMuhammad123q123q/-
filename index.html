@@ -420,17 +420,38 @@
     }
 
     function sendResults() {
-        const email = document.getElementById('email').value.trim();
-        if (email) {
-            // Здесь можно добавить реальную отправку на сервер
-            alert(`Результаты отправлены на ${email} (в реальной версии будет работать)`);
-            
-            // Показываем финальные результаты
-            showFinalResults();
-        } else {
-            alert('Введите email');
-        }
-    }
+    const email = document.getElementById('email').value.trim();
+    if (!email) return alert('Введите email');
+
+    // Формируем текст письма
+    const resultsText = `
+        Пользователь: ${userNickname}
+        Правильных ответов: ${correctAnswers}/${questions.length}
+        Ссылка на викторину: ${window.location.href}
+    `;
+
+    // Отправляем через FormSubmit (бесплатный сервис)
+    fetch('https://formsubmit.co/ajax/karollev1112@gmail.com', {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            email: email,
+            name: 'Результаты викторины',
+            message: resultsText
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert('Результаты отправлены!');
+        showFinalResults();
+    })
+    .catch(error => {
+        alert('Ошибка отправки. Попробуйте позже.');
+    });
+}
 
     function showFinalResults() {
         const finalResults = document.getElementById('final-results');
