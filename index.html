@@ -326,6 +326,9 @@
     let answeredQuestions = 0;
     let userNickname = '';
 
+    // Сбрасываем результаты при загрузке страницы
+    localStorage.removeItem('quizResults');
+
     function saveNickname() {
         const nicknameInput = document.getElementById('nickname');
         const nickname = nicknameInput.value.trim();
@@ -346,9 +349,11 @@
     }
 
     function buildQuiz() {
+        quizContainer.innerHTML = ''; // Очищаем предыдущие вопросы
         questions.forEach((question, index) => {
             let questionDiv = document.createElement('div');
             questionDiv.className = 'question';
+            questionDiv.dataset.answered = 'false'; // Добавляем флаг отвеченности
             questionDiv.innerHTML = `<p>${index + 1}. ${question.question}</p>
                                      <ul class="options"></ul>`;
             question.options.forEach(option => {
@@ -361,27 +366,36 @@
     }
 
     function checkAnswer(index, selected) {
-        let questionDiv = quizContainer.children[index];
-        let buttons = questionDiv.querySelectorAll('button');
+        const questionDiv = quizContainer.children[index];
+        
+        // Если уже отвечали на этот вопрос - игнорируем
+        if (questionDiv.dataset.answered === 'true') return;
+        
+        // Помечаем вопрос как отвеченный
+        questionDiv.dataset.answered = 'true';
+        answeredQuestions++;
+
+        const buttons = questionDiv.querySelectorAll('button');
+        let isCorrect = false;
+
+        // Подсвечиваем правильные/неправильные ответы
         buttons.forEach(btn => {
             if (btn.textContent === questions[index].answer) {
                 btn.classList.add('correct');
-            }
-            if (btn.textContent === selected && selected !== questions[index].answer) {
+                if (btn.textContent === selected) {
+                    isCorrect = true;
+                    correctAnswers++;
+                }
+            } else if (btn.textContent === selected) {
                 btn.classList.add('incorrect');
             }
             btn.disabled = true;
         });
 
-        if (selected === questions[index].answer) {
-            questionDiv.classList.add('correct');
-            correctAnswers++;
-        } else {
-            questionDiv.classList.add('incorrect');
-        }
-
-        answeredQuestions++;
-
+        // Обновляем стили вопроса
+        questionDiv.classList.add(isCorrect ? 'correct' : 'incorrect');
+        
+        // Показываем результаты, когда ответили на все вопросы
         if (answeredQuestions === questions.length) {
             showResult();
             showShareSection();
@@ -389,16 +403,19 @@
     }
 
     function showResult() {
-        resultContainer.innerHTML = `<p>Вы ответили правильно на <span>${correctAnswers}</span> из <span>${questions.length}</span> вопросов.</p>`;
+        resultContainer.innerHTML = `
+            <h3>Результаты викторины</h3>
+            <p>Правильных ответов: <strong>${correctAnswers} из ${questions.length}</strong></p>
+            <p>${getResultMessage(correctAnswers, questions.length)}</p>
+        `;
         
-        // Сохраняем результаты в localStorage
-        const quizResults = {
+        // Сохраняем результаты только после завершения
+        localStorage.setItem('quizResults', JSON.stringify({
             nickname: userNickname,
             correct: correctAnswers,
             total: questions.length,
-            date: new Date().toLocaleString()
-        };
-        localStorage.setItem('quizResults', JSON.stringify(quizResults));
+            completed: true
+        }));
     }
 
     function showShareSection() {
@@ -420,59 +437,68 @@
     }
 
     function sendResults() {
-    const userEmail = document.getElementById('email').value.trim();
-    if (!userEmail) return alert('Введите email');
+        const userEmail = document.getElementById('email').value.trim();
+        if (!userEmail) return alert('Введите email');
 
-    // Формируем текст письма для пользователя
-    const userMessage = `
-        Ассаляму алейкум, ${userNickname}!
-        Ваш результат викторины: ${correctAnswers} из ${questions.length} правильных ответов.
-        ${getResultMessage(correctAnswers, questions.length)}
-    `;
+        // Формируем текст письма для пользователя
+        const userMessage = `
+            Ассаляму алейкум, ${userNickname}!
+            
+            Ваши результаты викторины:
+            Правильных ответов: ${correctAnswers} из ${questions.length}
+            ${getResultMessage(correctAnswers, questions.length)}
+            
+            Ссылка на викторину: ${window.location.href}
+        `;
 
-    // Формируем текст письма для администратора (вас)
-    const adminMessage = `
-        Новые результаты викторины:
-        Пользователь: ${userNickname}
-        Email: ${userEmail}
-        Правильных ответов: ${correctAnswers}/${questions.length}
-        Дата: ${new Date().toLocaleString()}
-    `;
+        // Формируем текст письма для администратора
+        const adminMessage = `
+            Новый результат викторины:
+            Пользователь: ${userNickname}
+            Email: ${userEmail}
+            Правильных ответов: ${correctAnswers}/${questions.length}
+            Дата: ${new Date().toLocaleString()}
+        `;
 
-    // Отправляем письмо пользователю
-    fetch('https://formsubmit.co/ajax/' + userEmail, {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-            _subject: 'Ваши результаты викторины',
-            message: userMessage
+        // Отправляем письмо пользователю
+        fetch('https://formsubmit.co/ajax/' + userEmail, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                _subject: 'Ваши результаты викторины',
+                message: userMessage,
+                _replyto: userEmail
+            })
+        }).catch(error => console.error('Ошибка отправки пользователю:', error));
+
+        // Отправляем копию себе
+        fetch('https://formsubmit.co/ajax/karollev1112@gmail.com', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                _subject: `Результат викторины от ${userNickname}`,
+                message: adminMessage
+            })
         })
-    });
-
-    // Отправляем письмо администратору (вам)
-    fetch('https://formsubmit.co/ajax/karollev1112@gmail.com', {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-            _subject: `Результаты ${userNickname}`,
-            message: adminMessage
+        .then(response => {
+            if (!response.ok) throw new Error('Ошибка сети');
+            return response.json();
         })
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert('Результаты отправлены на вашу почту!');
-        showFinalResults();
-    })
-    .catch(error => {
-        alert('Ошибка отправки. Попробуйте позже.');
-    });
-}
+        .then(data => {
+            alert('Результаты отправлены на вашу почту! Проверьте входящие.');
+            showFinalResults();
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            alert('Произошла ошибка при отправке. Попробуйте позже.');
+        });
+    }
 
     function showFinalResults() {
         const finalResults = document.getElementById('final-results');
@@ -493,6 +519,10 @@
     }
 
     window.onload = function() {
+        // Всегда сбрасываем счетчики при загрузке
+        correctAnswers = 0;
+        answeredQuestions = 0;
+        
         const savedNickname = localStorage.getItem('userNickname');
         if (savedNickname) {
             userNickname = savedNickname;
@@ -501,13 +531,15 @@
             document.getElementById('quiz').style.display = 'block';
             buildQuiz();
             
-            // Проверяем, есть ли сохраненные результаты
+            // Показываем результаты только если викторина была завершена
             const savedResults = localStorage.getItem('quizResults');
             if (savedResults) {
                 const results = JSON.parse(savedResults);
-                correctAnswers = results.correct;
-                showResult();
-                showShareSection();
+                if (results.completed) {
+                    correctAnswers = results.correct;
+                    showResult();
+                    showShareSection();
+                }
             }
         }
     }
