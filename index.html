@@ -9,9 +9,27 @@
       gtag('js', new Date());
       gtag('config', 'G-HVXZ75FKV6');
     </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Викторина о Пророке Мухаммаде (Да благословит его Аллах и приветствует)</title>
+    <title>Викторина о Пророке Мухаммаде (ﷺ) | Тест на знание Сунны</title>
+    <meta name="description" content="Пройдите тест на знание жизни Пророка Мухаммада (ﷺ). 20 вопросов с ответами. Проверьте свои знания и поделитесь результатами!">
+    <meta name="keywords" content="ислам, викторина, Пророк Мухаммад, тест, Сунна, биография Пророка">
+    
+    <!-- Favicon (иконка сайта) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ﷺ</text></svg>">
+    
+    <!-- Schema.org markup for Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Quiz",
+      "name": "Викторина о Пророке Мухаммаде (ﷺ)",
+      "description": "Тест из 20 вопросов о жизни Посланника Аллаха",
+      "keywords": "ислам, викторина, Пророк Мухаммад, тест"
+    }
+    </script>
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,19 +40,41 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            line-height: 1.6;
         }
         .container {
-            width: 80%;
+            width: 90%;
             max-width: 800px;
             margin: 20px auto;
             background: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            position: relative;
+        }
+        .prophet-seal {
+            text-align: center;
+            font-size: 3em;
+            margin: 20px 0;
+            color: #0056b3;
+            font-family: 'Traditional Arabic', 'Arial', sans-serif;
         }
         h1 {
             text-align: center;
             color: #0056b3;
+            margin-bottom: 10px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            font-size: 1.2em;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .intro-text {
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 0 10px;
         }
         .nickname-form {
             display: flex;
@@ -43,40 +83,17 @@
             margin-bottom: 20px;
         }
         .nickname-form input {
-            padding: 10px;
+            padding: 12px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
             width: 100%;
+            max-width: 400px;
             box-sizing: border-box;
+            font-size: 16px;
         }
         .nickname-form button {
-            padding: 10px 20px;
-            background-color: #0056b3;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .nickname-form button:hover {
-            background-color: #003d82;
-        }
-        .question {
-            margin-bottom: 20px;
-            border: 2px solid transparent;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .options {
-            list-style-type: none;
-            padding: 0;
-        }
-        .options li {
-            margin-bottom: 10px;
-        }
-        .options button {
-            width: 100%;
-            padding: 10px;
+            padding: 12px 25px;
             background-color: #0056b3;
             color: #fff;
             border: none;
@@ -85,42 +102,80 @@
             font-size: 16px;
             transition: background-color 0.3s;
         }
-        .options button:hover {
+        .nickname-form button:hover {
             background-color: #003d82;
         }
+        .question {
+            margin-bottom: 25px;
+            border: 2px solid transparent;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options li {
+            margin-bottom: 12px;
+        }
+        .options button {
+            width: 100%;
+            padding: 12px;
+            background-color: #0056b3;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            text-align: left;
+        }
+        .options button:hover {
+            background-color: #003d82;
+            transform: translateY(-2px);
+        }
         .options button.correct {
-            background-color: green;
+            background-color: #28a745;
         }
         .options button.incorrect {
-            background-color: red;
+            background-color: #dc3545;
         }
         .question.correct {
-            border-color: green;
+            border-color: #28a745;
+            background-color: rgba(40, 167, 69, 0.1);
         }
         .question.incorrect {
-            border-color: red;
+            border-color: #dc3545;
+            background-color: rgba(220, 53, 69, 0.1);
         }
         .result {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .result span {
-            font-weight: bold;
-        }
-        .welcome-message {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 1.2em;
-        }
-        .share-section {
-            margin-top: 30px;
+            margin-top: 25px;
             text-align: center;
             padding: 20px;
             background-color: #f0f8ff;
             border-radius: 8px;
         }
+        .result h3 {
+            margin-top: 0;
+            color: #0056b3;
+        }
+        .welcome-message {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .share-section {
+            margin-top: 30px;
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
         .share-btn {
-            padding: 10px 20px;
+            padding: 12px 25px;
             background-color: #28a745;
             color: #fff;
             border: none;
@@ -128,6 +183,7 @@
             cursor: pointer;
             margin: 10px;
             font-size: 16px;
+            transition: background-color 0.3s;
         }
         .share-btn:hover {
             background-color: #218838;
@@ -137,7 +193,10 @@
         }
         #final-results {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
         }
         #email-form {
             margin-top: 20px;
@@ -146,44 +205,25 @@
             align-items: center;
         }
         #email-form input {
-            padding: 10px;
-            margin-bottom: 10px;
+            padding: 12px;
+            margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
             width: 100%;
             max-width: 300px;
+            font-size: 16px;
         }
         #email-form button {
-            padding: 10px 20px;
+            padding: 12px 25px;
             background-color: #0056b3;
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-        }
-        .copy-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 10px;
-        }
-        .copy-link input {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-right: 10px;
-            width: 200px;
-        }
-        .copy-link button {
-            padding: 8px 15px;
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            font-size: 16px;
         }
         
-        /* Стили для модального окна поделиться */
+        /* Модальное окно для расшаривания */
         .share-modal {
             display: none;
             position: fixed;
@@ -196,12 +236,12 @@
         }
         .share-modal-content {
             background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
+            margin: 10% auto;
+            padding: 25px;
             border-radius: 10px;
             width: 90%;
             max-width: 500px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
         .share-modal-header {
             display: flex;
@@ -212,6 +252,7 @@
         .share-modal-header h3 {
             margin: 0;
             color: #333;
+            font-size: 1.5em;
         }
         .close-share-modal {
             color: #aaa;
@@ -235,6 +276,10 @@
             align-items: center;
             cursor: pointer;
             width: 80px;
+            transition: transform 0.3s;
+        }
+        .share-platform:hover {
+            transform: scale(1.1);
         }
         .share-platform img {
             width: 50px;
@@ -242,6 +287,7 @@
             border-radius: 50%;
             object-fit: cover;
             margin-bottom: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .share-platform span {
             font-size: 12px;
@@ -254,21 +300,22 @@
         }
         .share-link {
             flex-grow: 1;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ddd;
             border-radius: 5px 0 0 5px;
             font-size: 14px;
         }
         .copy-share-link {
-            padding: 10px 15px;
+            padding: 12px 15px;
             background-color: #0056b3;
             color: white;
             border: none;
             border-radius: 0 5px 5px 0;
             cursor: pointer;
+            font-size: 14px;
         }
         
-        /* Стили для кнопки "Еще" и дополнительных опций */
+        /* Кнопка "Еще" и дополнительные опции */
         .more-options {
             position: relative;
             display: inline-block;
@@ -298,6 +345,9 @@
             left: 50%;
             transform: translateX(-50%);
         }
+        .more-options.active .more-options-content {
+            display: block;
+        }
         .more-options-content .share-platform {
             width: 100%;
             flex-direction: row;
@@ -314,31 +364,57 @@
             margin-right: 10px;
             margin-bottom: 0;
         }
-        .more-options:hover .more-options-content {
-            display: block;
+        
+        /* Адаптивность */
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+            .share-platform {
+                width: 70px;
+            }
+            .share-platform img {
+                width: 40px;
+                height: 40px;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Викторина о Пророке Мухаммаде (Да благословит его Аллах и приветствует)</h1>
+    <!-- Печать Пророка (ﷺ) -->
+    <div class="prophet-seal" title="Да благословит его Аллах и приветствует">ﷺ</div>
+    
+    <h1>Викторина о Пророке Мухаммаде (ﷺ)</h1>
+    <h2>Проверьте свои знания о жизни Посланника Аллаха</h2>
+    
+    <div class="intro-text">
+        <p>Эта викторина поможет вам проверить свои знания о жизни и учении Пророка Мухаммада (да благословит его Аллах и приветствует). Ответьте на 20 вопросов и узнайте, насколько хорошо вы знакомы с Сунной.</p>
+    </div>
+    
     <div class="nickname-form" id="nickname-form">
-        <input type="text" id="nickname" placeholder="Введите ваш никнейм">
+        <input type="text" id="nickname" placeholder="Введите ваш никнейм" required>
         <button onclick="saveNickname()">Начать викторину</button>
     </div>
+    
     <div class="welcome-message" id="welcome-message" style="display: none;"></div>
     <div id="quiz" style="display: none;"></div>
-    <div id="result" class="result"></div>
+    
+    <div id="result" class="result hidden"></div>
+    
     <div id="share-section" class="share-section hidden">
         <h3>Поделитесь результатами!</h3>
         <button id="share-btn" class="share-btn" onclick="openShareModal()">Поделиться</button>
+        
         <div id="email-form" class="hidden">
             <h3>Отправить результаты на email</h3>
-            <input type="email" id="email" placeholder="Ваш email">
+            <input type="email" id="email" placeholder="Ваш email" required>
             <button onclick="sendResults()">Отправить</button>
         </div>
     </div>
+    
     <div id="final-results" class="hidden"></div>
 </div>
 
@@ -346,32 +422,38 @@
 <div id="share-modal" class="share-modal">
     <div class="share-modal-content">
         <div class="share-modal-header">
-            <h3>Поделиться</h3>
+            <h3>Поделиться результатами</h3>
             <span class="close-share-modal" onclick="closeShareModal()">&times;</span>
         </div>
+        
         <div class="share-platforms">
             <div class="share-platform" onclick="shareOnPlatform('whatsapp')">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
                 <span>WhatsApp</span>
             </div>
+            
             <div class="share-platform" onclick="shareOnPlatform('whatsapp_business')">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/WhatsApp_logo-color-vertical.svg" alt="WhatsApp Business">
                 <span>WhatsApp Business</span>
             </div>
+            
             <div class="share-platform" onclick="shareOnPlatform('telegram')">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
                 <span>Telegram</span>
             </div>
+            
             <div class="share-platform" onclick="shareOnPlatform('facebook')">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook">
                 <span>Facebook</span>
             </div>
+            
             <div class="share-platform" onclick="shareOnPlatform('twitter')">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Logo_of_Twitter.svg" alt="Twitter">
                 <span>Twitter</span>
             </div>
-            <div class="more-options">
-                <div class="more-btn" onclick="event.stopPropagation()">
+            
+            <div class="more-options" id="more-options">
+                <div class="more-btn" onclick="toggleMoreOptions()">
                     <div class="dots">⋯</div>
                     <span>Еще</span>
                 </div>
@@ -399,6 +481,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="share-link-container">
             <input type="text" id="share-link" class="share-link" value="" readonly>
             <button class="copy-share-link" onclick="copyShareLink()">Копировать</button>
@@ -534,6 +617,8 @@
             document.getElementById('nickname-form').style.display = 'none';
             document.getElementById('quiz').style.display = 'block';
             buildQuiz();
+        } else {
+            alert('Пожалуйста, введите ваш никнейм');
         }
     }
 
@@ -544,11 +629,11 @@
     }
 
     function buildQuiz() {
-        quizContainer.innerHTML = ''; // Очищаем предыдущие вопросы
+        quizContainer.innerHTML = '';
         questions.forEach((question, index) => {
             let questionDiv = document.createElement('div');
             questionDiv.className = 'question';
-            questionDiv.dataset.answered = 'false'; // Добавляем флаг отвеченности
+            questionDiv.dataset.answered = 'false';
             questionDiv.innerHTML = `<p>${index + 1}. ${question.question}</p>
                                      <ul class="options"></ul>`;
             question.options.forEach(option => {
@@ -562,18 +647,14 @@
 
     function checkAnswer(index, selected) {
         const questionDiv = quizContainer.children[index];
-        
-        // Если уже отвечали на этот вопрос - игнорируем
         if (questionDiv.dataset.answered === 'true') return;
         
-        // Помечаем вопрос как отвеченный
         questionDiv.dataset.answered = 'true';
         answeredQuestions++;
 
         const buttons = questionDiv.querySelectorAll('button');
         let isCorrect = false;
 
-        // Подсвечиваем правильные/неправильные ответы
         buttons.forEach(btn => {
             if (btn.textContent === questions[index].answer) {
                 btn.classList.add('correct');
@@ -587,13 +668,19 @@
             btn.disabled = true;
         });
 
-        // Обновляем стили вопроса
         questionDiv.classList.add(isCorrect ? 'correct' : 'incorrect');
         
-        // Показываем результаты, когда ответили на все вопросы
         if (answeredQuestions === questions.length) {
             showResult();
             showShareSection();
+            // Отправка данных в Google Analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'quiz_completed', {
+                    'event_category': 'engagement',
+                    'event_label': 'Quiz about Prophet Muhammad',
+                    'value': correctAnswers
+                });
+            }
         }
     }
 
@@ -602,9 +689,10 @@
             <h3>Результаты викторины</h3>
             <p>Правильных ответов: <strong>${correctAnswers} из ${questions.length}</strong></p>
             <p>${getResultMessage(correctAnswers, questions.length)}</p>
+            <p>Пригласите друзей проверить их знания!</p>
         `;
+        resultContainer.classList.remove('hidden');
         
-        // Сохраняем результаты только после завершения
         localStorage.setItem('quizResults', JSON.stringify({
             nickname: userNickname,
             correct: correctAnswers,
@@ -623,10 +711,20 @@
         const shareLink = document.getElementById('share-link');
         shareLink.value = window.location.href;
         modal.style.display = 'block';
+        
+        // Отслеживание события в Google Analytics
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'share_click', {
+                'event_category': 'engagement',
+                'event_label': 'Share quiz results'
+            });
+        }
     }
 
     function closeShareModal() {
         document.getElementById('share-modal').style.display = 'none';
+        // Закрываем меню "Еще" при закрытии модального окна
+        document.getElementById('more-options').classList.remove('active');
     }
 
     function copyShareLink() {
@@ -634,6 +732,19 @@
         shareLink.select();
         document.execCommand('copy');
         alert('Ссылка скопирована в буфер обмена!');
+        
+        // Отслеживание события копирования
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'copy_link', {
+                'event_category': 'engagement',
+                'event_label': 'Copy quiz link'
+            });
+        }
+    }
+
+    function toggleMoreOptions() {
+        const moreOptions = document.getElementById('more-options');
+        moreOptions.classList.toggle('active');
     }
 
     function shareOnPlatform(platform) {
@@ -676,6 +787,15 @@
                 break;
         }
         
+        // Отслеживание события расшаривания
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'share', {
+                'event_category': 'engagement',
+                'event_label': platform,
+                'method': platform
+            });
+        }
+        
         if (platform === 'email' || platform === 'sms') {
             window.location.href = shareUrl;
         } else {
@@ -687,10 +807,12 @@
 
     function sendResults() {
         const userEmail = document.getElementById('email').value.trim();
-        if (!userEmail) return alert('Введите email');
+        if (!userEmail) {
+            alert('Пожалуйста, введите email');
+            return;
+        }
 
-        // Формируем текст письма для пользователя
-        const userMessage = `
+        const emailMessage = `
             Ассаляму алейкум, ${userNickname}!
             
             Ваши результаты викторины:
@@ -698,32 +820,11 @@
             ${getResultMessage(correctAnswers, questions.length)}
             
             Ссылка на викторину: ${window.location.href}
+            
+            Пригласите друзей проверить их знания!
         `;
 
-        // Формируем текст письма для администратора
-        const adminMessage = `
-            Новый результат викторины:
-            Пользователь: ${userNickname}
-            Email: ${userEmail}
-            Правильных ответов: ${correctAnswers}/${questions.length}
-            Дата: ${new Date().toLocaleString()}
-        `;
-
-        // Отправляем письмо пользователю
-        fetch('https://formsubmit.co/ajax/' + userEmail, {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                _subject: 'Ваши результаты викторины',
-                message: userMessage,
-                _replyto: userEmail
-            })
-        }).catch(error => console.error('Ошибка отправки пользователю:', error));
-
-        // Отправляем копию себе
+        // Отправка через FormSubmit
         fetch('https://formsubmit.co/ajax/karollev1112@gmail.com', {
             method: 'POST',
             headers: { 
@@ -731,8 +832,12 @@
                 'Accept': 'application/json'
             },
             body: JSON.stringify({
-                _subject: `Результат викторины от ${userNickname}`,
-                message: adminMessage
+                _subject: `Результаты викторины от ${userNickname}`,
+                name: userNickname,
+                email: userEmail,
+                message: emailMessage,
+                _replyto: userEmail,
+                _template: 'table'
             })
         })
         .then(response => {
@@ -742,6 +847,14 @@
         .then(data => {
             alert('Результаты отправлены на вашу почту! Проверьте входящие.');
             showFinalResults();
+            
+            // Отслеживание отправки email
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'email_sent', {
+                    'event_category': 'engagement',
+                    'event_label': 'Send quiz results'
+                });
+            }
         })
         .catch(error => {
             console.error('Ошибка:', error);
@@ -756,19 +869,19 @@
             <h2>Ваши результаты, ${userNickname}</h2>
             <p>Правильных ответов: <strong>${correctAnswers}/${questions.length}</strong></p>
             <p>${getResultMessage(correctAnswers, questions.length)}</p>
+            <p>Спасибо за участие! Поделитесь викториной с друзьями.</p>
         `;
     }
 
     function getResultMessage(correct, total) {
         const percentage = (correct / total) * 100;
-        if (percentage >= 90) return "Отличный результат! Вы хорошо знаете биографию Пророка (ﷺ).";
+        if (percentage >= 90) return "Отличный результат! Вы прекрасно знаете биографию Пророка (ﷺ).";
         if (percentage >= 70) return "Хороший результат! Вы знаете основные моменты жизни Пророка (ﷺ).";
         if (percentage >= 50) return "Неплохо, но есть куда расти! Рекомендуем почитать больше о Пророке (ﷺ).";
         return "Попробуйте еще раз и изучите больше о жизни Пророка Мухаммада (ﷺ).";
     }
 
     window.onload = function() {
-        // Всегда сбрасываем счетчики при загрузке
         correctAnswers = 0;
         answeredQuestions = 0;
         
@@ -780,7 +893,6 @@
             document.getElementById('quiz').style.display = 'block';
             buildQuiz();
             
-            // Показываем результаты только если викторина была завершена
             const savedResults = localStorage.getItem('quizResults');
             if (savedResults) {
                 const results = JSON.parse(savedResults);
@@ -793,11 +905,12 @@
         }
     }
 
-    // Закрытие модального окна при клике вне его
     window.onclick = function(event) {
         const modal = document.getElementById('share-modal');
         if (event.target == modal) {
             modal.style.display = 'none';
+            // Закрываем меню "Еще" при клике вне модального окна
+            document.getElementById('more-options').classList.remove('active');
         }
     }
 </script>
