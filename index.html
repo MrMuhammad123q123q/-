@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Викторина о Пророке Мухаммаде (ﷺ) | Тест на знание Сунны</title>
-    <meta name="description" content="Пройдите тест на знание жизни Пророка Мухаммада (ﷺ). 30 вопросов с ответами. Проверьте свои знания и поделитесь результатами!">
+    <meta name="description" content="Пройдите тест на знание жизни Пророка Мухаммада (да благословит его Аллах и приветствует). 30 вопросов с ответами. Проверьте свои знания и поделитесь результатами!">
     <meta name="keywords" content="ислам, викторина, Пророк Мухаммад, тест, Сунна, биография Пророка">
     
     <!-- Favicon (иконка сайта) -->
@@ -223,7 +223,7 @@
             font-size: 16px;
         }
         
-        /* Модальное окно для расшаривания */
+        /* Обновленные стили модального окна */
         .share-modal {
             display: none;
             position: fixed;
@@ -237,62 +237,61 @@
         .share-modal-content {
             background-color: #fefefe;
             margin: 10% auto;
-            padding: 25px;
+            padding: 20px;
             border-radius: 10px;
             width: 90%;
-            max-width: 500px;
+            max-width: 400px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-        .share-modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .share-modal-header h3 {
-            margin: 0;
-            color: #333;
-            font-size: 1.5em;
-        }
-        .close-share-modal {
-            color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .close-share-modal:hover {
-            color: #333;
-        }
         .share-platforms {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
             gap: 15px;
-            margin-bottom: 20px;
+            padding: 10px 0;
         }
         .share-platform {
             display: flex;
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            width: 80px;
             transition: transform 0.3s;
         }
         .share-platform:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
         .share-platform img {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             object-fit: cover;
             margin-bottom: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .share-platform span {
-            font-size: 12px;
-            color: #333;
+            font-size: 11px;
             text-align: center;
+            line-height: 1.2;
+        }
+        .more-options {
+            grid-column: 1 / -1;
+            text-align: center;
+        }
+        .more-btn {
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: #f0f0f0;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .more-options-content {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 15px;
+            padding: 10px 0 0;
+        }
+        .more-options.active .more-options-content {
+            display: grid;
         }
         .share-link-container {
             display: flex;
@@ -315,79 +314,13 @@
             font-size: 14px;
         }
         
-            /* Обновленные стили для меню "Еще" */
-    .more-options {
-        position: relative;
-        display: inline-block;
-    }
-    .more-btn {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        cursor: pointer;
-        width: 80px;
-        padding: 8px;
-    }
-    .more-options-content {
-        display: none;
-        position: absolute;
-        background: #fff;
-        min-width: 220px;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-        border-radius: 8px;
-        padding: 10px;
-        bottom: auto;
-        top: 100%;
-        right: 0;
-        left: auto;
-        transform: none;
-        z-index: 2;
-    }
-    .more-options.active .more-options-content {
-        display: block;
-    }
-
-    /* Адаптивность для мобилок */
-    @media (max-width: 480px) {
-        .more-options-content {
-            right: 50%;
-            transform: translateX(50%);
-            min-width: 200px;
-        }
-        .share-platforms {
-            gap: 10px;
-        }
-        .share-platform img {
-            width: 40px;
-            height: 40px;
-        }
-    }
-
-    /* Горизонтальное выравнивание для ПК */
-    @media (min-width: 768px) {
-        .share-platforms {
-            flex-wrap: nowrap;
-            justify-content: flex-start;
-            overflow-x: auto;
-            padding-bottom: 10px;
-        }
-        .share-platform {
-            flex: 0 0 auto;
-        }
-    }
-        
-        /* Адаптивность */
-        @media (max-width: 600px) {
+        @media (max-width: 480px) {
             .container {
                 width: 95%;
                 padding: 15px;
             }
-            .share-platform {
-                width: 70px;
-            }
-            .share-platform img {
-                width: 40px;
-                height: 40px;
+            .share-platforms {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
     </style>
@@ -395,7 +328,6 @@
 <body>
 
 <div class="container">
-    <!-- Печать Пророка (ﷺ) -->
     <div class="prophet-seal" title="Да благословит его Аллах и приветствует">ﷺ</div>
     
     <h1>Викторина о Пророке Мухаммаде (ﷺ)</h1>
@@ -429,7 +361,7 @@
     <div id="final-results" class="hidden"></div>
 </div>
 
-<!-- Модальное окно для расшаривания -->
+<!-- Обновленное модальное окно -->
 <div id="share-modal" class="share-modal">
     <div class="share-modal-content">
         <div class="share-modal-header">
@@ -439,13 +371,8 @@
         
         <div class="share-platforms">
             <div class="share-platform" onclick="shareOnPlatform('whatsapp')">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/WhatsApp_logo-color-vertical.svg" alt="WhatsApp">
                 <span>WhatsApp</span>
-            </div>
-            
-            <div class="share-platform" onclick="shareOnPlatform('whatsapp_business')">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/WhatsApp_logo-color-vertical.svg" alt="WhatsApp Business">
-                <span>WhatsApp Business</span>
             </div>
             
             <div class="share-platform" onclick="shareOnPlatform('telegram')">
@@ -473,10 +400,6 @@
                         <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/VK.com-logo.svg" alt="VKontakte">
                         <span>ВКонтакте</span>
                     </div>
-                    <div class="share-platform" onclick="shareOnPlatform('odnoklassniki')">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/Odnoklassniki_logo.svg" alt="Odnoklassniki">
-                        <span>Одноклассники</span>
-                    </div>
                     <div class="share-platform" onclick="shareOnPlatform('linkedin')">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn">
                         <span>LinkedIn</span>
@@ -484,10 +407,6 @@
                     <div class="share-platform" onclick="shareOnPlatform('email')">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Mail_%28iOS%29.svg" alt="Email">
                         <span>Email</span>
-                    </div>
-                    <div class="share-platform" onclick="shareOnPlatform('sms')">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/SMS_logo.png" alt="SMS">
-                        <span>SMS</span>
                     </div>
                 </div>
             </div>
