@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Викторина о Пророке Мухаммаде (ﷺ) | Тест на знание Сунны</title>
-    <meta name="description" content="Пройдите тест на знание жизни Пророка Мухаммада (ﷺ). 20 вопросов с ответами. Проверьте свои знания и поделитесь результатами!">
+    <meta name="description" content="Пройдите тест на знание жизни Пророка Мухаммада (ﷺ). 30 вопросов с ответами. Проверьте свои знания и поделитесь результатами!">
     <meta name="keywords" content="ислам, викторина, Пророк Мухаммад, тест, Сунна, биография Пророка">
     
     <!-- Favicon (иконка сайта) -->
@@ -25,7 +25,7 @@
       "@context": "https://schema.org",
       "@type": "Quiz",
       "name": "Викторина о Пророке Мухаммаде (ﷺ)",
-      "description": "Тест из 20 вопросов о жизни Посланника Аллаха",
+      "description": "Тест из 30 вопросов о жизни Посланника Аллаха",
       "keywords": "ислам, викторина, Пророк Мухаммад, тест"
     }
     </script>
@@ -315,55 +315,66 @@
             font-size: 14px;
         }
         
-        /* Кнопка "Еще" и дополнительные опции */
-        .more-options {
-            position: relative;
-            display: inline-block;
-        }
-        .more-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            width: 80px;
-        }
-        .more-btn .dots {
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 5px;
-        }
+            /* Обновленные стили для меню "Еще" */
+    .more-options {
+        position: relative;
+        display: inline-block;
+    }
+    .more-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        width: 80px;
+        padding: 8px;
+    }
+    .more-options-content {
+        display: none;
+        position: absolute;
+        background: #fff;
+        min-width: 220px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        border-radius: 8px;
+        padding: 10px;
+        bottom: auto;
+        top: 100%;
+        right: 0;
+        left: auto;
+        transform: none;
+        z-index: 2;
+    }
+    .more-options.active .more-options-content {
+        display: block;
+    }
+
+    /* Адаптивность для мобилок */
+    @media (max-width: 480px) {
         .more-options-content {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            border-radius: 8px;
-            padding: 10px;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
+            right: 50%;
+            transform: translateX(50%);
+            min-width: 200px;
         }
-        .more-options.active .more-options-content {
-            display: block;
+        .share-platforms {
+            gap: 10px;
         }
-        .more-options-content .share-platform {
-            width: 100%;
-            flex-direction: row;
+        .share-platform img {
+            width: 40px;
+            height: 40px;
+        }
+    }
+
+    /* Горизонтальное выравнивание для ПК */
+    @media (min-width: 768px) {
+        .share-platforms {
+            flex-wrap: nowrap;
             justify-content: flex-start;
-            padding: 8px;
-            border-radius: 4px;
+            overflow-x: auto;
+            padding-bottom: 10px;
         }
-        .more-options-content .share-platform:hover {
-            background-color: #e9e9e9;
+        .share-platform {
+            flex: 0 0 auto;
         }
-        .more-options-content .share-platform img {
-            width: 30px;
-            height: 30px;
-            margin-right: 10px;
-            margin-bottom: 0;
-        }
+    }
         
         /* Адаптивность */
         @media (max-width: 600px) {
@@ -391,7 +402,7 @@
     <h2>Проверьте свои знания о жизни Посланника Аллаха</h2>
     
     <div class="intro-text">
-        <p>Эта викторина поможет вам проверить свои знания о жизни и учении Пророка Мухаммада (да благословит его Аллах и приветствует). Ответьте на 20 вопросов и узнайте, насколько хорошо вы знакомы с Сунной.</p>
+        <p>Эта викторина поможет вам проверить свои знания о жизни и учении Пророка Мухаммада (да благословит его Аллах и приветствует). Ответьте на 30 вопросов и узнайте, насколько хорошо вы знакомы с Сунной.</p>
     </div>
     
     <div class="nickname-form" id="nickname-form">
@@ -595,6 +606,52 @@
             question: "Как называется первая мечеть, построенная пророком Мухаммадом в Медине?",
             options: ["Мечеть Аль-Харам", "Мечеть Куба", "Мечеть Аль-Акса", "Мечеть Пророка"],
             answer: "Мечеть Куба"
+        },
+        // Новые добавленные вопросы
+        {
+            question: "Как звали кормилицу пророка Мухаммада?",
+            options: ["Халима", "Амина", "Фатима", "Зайнаб"],
+            answer: "Халима"
+        },
+        {
+            question: "Сколько лет длилась пророческая миссия Мухаммада?",
+            options: ["10 лет", "23 года", "30 лет", "40 лет"],
+            answer: "23 года"
+        },
+        {
+            question: "Как называется переселение пророка Мухаммада из Мекки в Медину?",
+            options: ["Исра", "Мирадж", "Хиджра", "Хадж"],
+            answer: "Хиджра"
+        },
+        {
+            question: "Как звали первого человека, принявшего ислам после пророка Мухаммада?",
+            options: ["Абу Бакр", "Умар", "Усман", "Али"],
+            answer: "Абу Бакр"
+        },
+        {
+            question: "Как называется вознесение пророка Мухаммада на небеса?",
+            options: ["Исра", "Мирадж", "Хиджра", "Хадж"],
+            answer: "Мирадж"
+        },
+        {
+            question: "Сколько детей было у пророка Мухаммада?",
+            options: ["3", "5", "7", "9"],
+            answer: "7"
+        },
+        {
+            question: "Как звали дочь пророка Мухаммада, которая пережила его?",
+            options: ["Зайнаб", "Рукайя", "Умм Кульсум", "Фатима"],
+            answer: "Фатима"
+        },
+        {
+            question: "В каком году по григорианскому календарю родился пророк Мухаммад?",
+            options: ["570", "571", "572", "573"],
+            answer: "571"
+        },
+        {
+            question: "Как называется договор, заключенный между мусульманами и мединскими племенами?",
+            options: ["Договор Акабы", "Договор Худайбии", "Конституция Медины", "Договор Бадра"],
+            answer: "Конституция Медины"
         }
     ];
 
@@ -759,7 +816,18 @@
                 shareUrl = `https://wa.me/?text=${text}%20${url}`;
                 break;
             case 'whatsapp_business':
-                shareUrl = `https://wa.me/?text=${text}%20${url}`;
+                // Проверяем, установлено ли приложение WhatsApp Business
+                if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                    // Пытаемся открыть WhatsApp Business
+                    window.location.href = `whatsapp://send?text=${text}%20${url}`;
+                    // Если не получилось, через 400ms открываем страницу загрузки
+                    setTimeout(function() {
+                        window.location.href = 'https://play.google.com/store/apps/details?id=com.whatsapp.w4b';
+                    }, 400);
+                } else {
+                    // Для десктопов просто открываем WhatsApp Web
+                    shareUrl = `https://web.whatsapp.com/send?text=${text}%20${url}`;
+                }
                 break;
             case 'telegram':
                 shareUrl = `https://t.me/share/url?url=${url}&text=${text}`;
