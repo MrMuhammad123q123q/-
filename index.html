@@ -591,7 +591,6 @@
         const nickname = nicknameInput.value.trim();
         if (nickname) {
             userNickname = nickname;
-            localStorage.setItem('userNickname', nickname);
             displayWelcomeMessage(nickname);
             document.getElementById('nickname-form').style.display = 'none';
             document.getElementById('quiz').style.display = 'block';
@@ -670,13 +669,6 @@
             <p>Пригласите друзей проверить их знания!</p>
         `;
         resultContainer.classList.remove('hidden');
-        
-        localStorage.setItem('quizResults', JSON.stringify({
-            nickname: userNickname,
-            correct: correctAnswers,
-            total: questions.length,
-            completed: true
-        }));
     }
 
     function showShareSection() {
@@ -836,27 +828,18 @@ ${getResultMessage(correctAnswers, questions.length)}
     }
 
     window.onload = function() {
+        // Сбрасываем все данные при каждой загрузке страницы
         correctAnswers = 0;
         answeredQuestions = 0;
+        userNickname = '';
         
-        const savedNickname = localStorage.getItem('userNickname');
-        if (savedNickname) {
-            userNickname = savedNickname;
-            displayWelcomeMessage(savedNickname);
-            document.getElementById('nickname-form').style.display = 'none';
-            document.getElementById('quiz').style.display = 'block';
-            buildQuiz();
-            
-            const savedResults = localStorage.getItem('quizResults');
-            if (savedResults) {
-                const results = JSON.parse(savedResults);
-                if (results.completed) {
-                    correctAnswers = results.correct;
-                    showResult();
-                    showShareSection();
-                }
-            }
-        }
+        // Показываем форму для ввода никнейма
+        document.getElementById('nickname-form').style.display = 'flex';
+        document.getElementById('quiz').style.display = 'none';
+        document.getElementById('welcome-message').style.display = 'none';
+        document.getElementById('result').classList.add('hidden');
+        document.getElementById('share-section').classList.add('hidden');
+        document.getElementById('final-results').classList.add('hidden');
     }
 
     window.onclick = function(event) {
@@ -866,6 +849,5 @@ ${getResultMessage(correctAnswers, questions.length)}
         }
     }
 </script>
-
 </body>
 </html>
