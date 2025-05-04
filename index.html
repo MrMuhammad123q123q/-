@@ -591,6 +591,8 @@
         const nickname = nicknameInput.value.trim();
         if (nickname) {
             userNickname = nickname;
+            // Сохраняем никнейм в localStorage
+            localStorage.setItem('userNickname', nickname);
             displayWelcomeMessage(nickname);
             document.getElementById('nickname-form').style.display = 'none';
             document.getElementById('quiz').style.display = 'block';
@@ -828,15 +830,25 @@ ${getResultMessage(correctAnswers, questions.length)}
     }
 
     window.onload = function() {
-        // Сбрасываем все данные при каждой загрузке страницы
+        // Сбрасываем результаты викторины при каждой загрузке
         correctAnswers = 0;
         answeredQuestions = 0;
-        userNickname = '';
         
-        // Показываем форму для ввода никнейма
-        document.getElementById('nickname-form').style.display = 'flex';
-        document.getElementById('quiz').style.display = 'none';
-        document.getElementById('welcome-message').style.display = 'none';
+        // Проверяем сохраненный никнейм
+        const savedNickname = localStorage.getItem('userNickname');
+        if (savedNickname) {
+            userNickname = savedNickname;
+            displayWelcomeMessage(savedNickname);
+            document.getElementById('nickname-form').style.display = 'none';
+            document.getElementById('quiz').style.display = 'block';
+            buildQuiz();
+        } else {
+            // Показываем форму для ввода никнейма
+            document.getElementById('nickname-form').style.display = 'flex';
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('welcome-message').style.display = 'none';
+        }
+        
         document.getElementById('result').classList.add('hidden');
         document.getElementById('share-section').classList.add('hidden');
         document.getElementById('final-results').classList.add('hidden');
