@@ -111,6 +111,10 @@
             padding: 15px;
             border-radius: 8px;
             background-color: #f9f9f9;
+            display: none; /* Скрываем все вопросы по умолчанию */
+        }
+        .question.active {
+            display: block; /* Показываем активный вопрос */
         }
         .options {
             list-style-type: none;
@@ -155,10 +159,6 @@
             padding: 20px;
             background-color: #f0f8ff;
             border-radius: 8px;
-        }
-        .result h3 {
-            margin-top: 0;
-            color: #0056b3;
         }
         .welcome-message {
             margin-top: 20px;
@@ -585,18 +585,18 @@
     let correctAnswers = 0;
     let answeredQuestions = 0;
     let userNickname = '';
+    let currentQuestionIndex = 0;
 
     function saveNickname() {
         const nicknameInput = document.getElementById('nickname');
         const nickname = nicknameInput.value.trim();
         if (nickname) {
             userNickname = nickname;
-            // Сохраняем никнейм в localStorage
             localStorage.setItem('userNickname', nickname);
             displayWelcomeMessage(nickname);
             document.getElementById('nickname-form').style.display = 'none';
             document.getElementById('quiz').style.display = 'block';
-            buildQuiz();
+            showQuestion(0); // Показываем первый вопрос
         } else {
             alert('Пожалуйста, введите ваш никнейм');
         }
@@ -613,6 +613,7 @@
         questions.forEach((question, index) => {
             let questionDiv = document.createElement('div');
             questionDiv.className = 'question';
+            questionDiv.dataset.index = index;
             questionDiv.dataset.answered = 'false';
             questionDiv.innerHTML = `<p>${index + 1}. ${question.question}</p>
                                      <ul class="options"></ul>`;
@@ -623,6 +624,22 @@
             });
             quizContainer.appendChild(questionDiv);
         });
+    }
+
+    function showQuestion(index) {
+        // Скрываем все вопросы
+        const allQuestions = document.querySelectorAll('.question');
+        allQuestions.forEach(q => q.classList.remove('active'));
+        
+        // Показываем текущий вопрос
+        if (index < questions.length) {
+            allQuestions[index].classList.add('active');
+            currentQuestionIndex = index;
+        } else {
+            // Если вопросы закончились, показываем результаты
+            showResult();
+            showShareSection();
+        }
     }
 
     function checkAnswer(index, selected) {
@@ -650,17 +667,10 @@
 
         questionDiv.classList.add(isCorrect ? 'correct' : 'incorrect');
         
-        if (answeredQuestions === questions.length) {
-            showResult();
-            showShareSection();
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'quiz_completed', {
-                    'event_category': 'engagement',
-                    'event_label': 'Quiz about Prophet Muhammad',
-                    'value': correctAnswers
-                });
-            }
-        }
+        // Через 1 секунду показываем следующий вопрос
+        setTimeout(() => {
+            showQuestion(index + 1);
+        }, 1000);
     }
 
     function showResult() {
@@ -671,6 +681,14 @@
             <p>Пригласите друзей проверить их знания!</p>
         `;
         resultContainer.classList.remove('hidden');
+        
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'quiz_completed', {
+                'event_category': 'engagement',
+                'event_label': 'Quiz about Prophet Muhammad',
+                'value': correctAnswers
+            });
+        }
     }
 
     function showShareSection() {
@@ -833,6 +851,7 @@ ${getResultMessage(correctAnswers, questions.length)}
         // Сбрасываем результаты викторины при каждой загрузке
         correctAnswers = 0;
         answeredQuestions = 0;
+        currentQuestionIndex = 0;
         
         // Проверяем сохраненный никнейм
         const savedNickname = localStorage.getItem('userNickname');
@@ -842,6 +861,7 @@ ${getResultMessage(correctAnswers, questions.length)}
             document.getElementById('nickname-form').style.display = 'none';
             document.getElementById('quiz').style.display = 'block';
             buildQuiz();
+            showQuestion(0); // Показываем первый вопрос
         } else {
             // Показываем форму для ввода никнейма
             document.getElementById('nickname-form').style.display = 'flex';
