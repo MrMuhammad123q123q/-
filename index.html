@@ -222,8 +222,6 @@
             cursor: pointer;
             font-size: 16px;
         }
-        
-        /* Стили модального окна YouTube */
         .share-modal {
             display: none;
             position: fixed;
@@ -398,7 +396,6 @@
     <div id="final-results" class="hidden"></div>
 </div>
 
-<!-- Модальное окно шаринга -->
 <div id="share-modal" class="share-modal">
     <div class="share-modal-content">
         <div class="share-modal-header">
@@ -607,6 +604,26 @@
     let currentQuestionIndex = 0;
     let userAnswers = new Array(questions.length).fill(null);
 
+    function playArabicPrayer() {
+        if ('speechSynthesis' in window) {
+            const msg = new SpeechSynthesisUtterance();
+            msg.text = "اللهم صل وسلم على نبينا محمد";
+            msg.lang = 'ar-SA';
+            msg.rate = 0.9;
+            
+            const arabicVoice = speechSynthesis.getVoices().find(voice => 
+                voice.lang === 'ar-SA' || voice.lang.startsWith('ar-')
+            );
+
+            if (arabicVoice) {
+                msg.voice = arabicVoice;
+                speechSynthesis.speak(msg);
+            } else {
+                speechSynthesis.speak(msg);
+            }
+        }
+    }
+
     function saveNickname() {
         const nicknameInput = document.getElementById('nickname');
         const nickname = nicknameInput.value.trim();
@@ -699,7 +716,8 @@
             <p>Пригласите друзей проверить их знания!</p>
         `;
         resultContainer.classList.remove('hidden');
-        
+        playArabicPrayer();
+
         if (typeof gtag !== 'undefined') {
             gtag('event', 'quiz_completed', {
                 'event_category': 'engagement',
